@@ -47,8 +47,8 @@ jobs:
                 command: sudo npm install --global --unsafe-perm now
             - deploy:
                 name: Deploy & Alias
-                command: now -t dGa8L7SvVQn3vX6sxx7Xnlbj 
-                
+                command: now -t dGa8L7SvVQn3vX6sxx7Xnlbj
+
 workflows:
     version: 2
     test-deploy-purge:
