@@ -1,61 +1,45 @@
-
-defaults: &defaults
-    docker:
-        - image: circleci/node:8.6.0
-    working_directory: ~/repo
-
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
 version: 2
 jobs:
-    checkout:
-        <<: *defaults
-        steps:
-            - checkout
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:8.6.0
 
-            # Download and cache dependencies
-            - restore_cache:
-                keys:
-                - v1-dependencies-{{ checksum "package.json" }}
-                # fallback to using the latest cache if no exact match is found
-                - v1-dependencies-
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mongo:3.4.4
 
-            - run:
-                name: NPM Install
-                command: npm install
+    working_directory: ~/repo
 
-            - save_cache:
-                paths:
-                  - node_modules
-                key: v1-dependencies-{{ checksum "package.json" }}
+    steps:
+      - checkout
 
-    unit-test:
-        <<: *defaults
-        steps:
-            - run:
-                name: NPM Install
-                command: npm install
-            - run:
-                name: Unit Test
-                command: npm run test
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
 
-    deploy:
-        <<: *defaults
-        steps:
-            - run:
-                name: Install Now CLI
-                command: sudo npm install --global --unsafe-perm now
-            - deploy:
-                name: Deploy & Alias
-                command: now -t dGa8L7SvVQn3vX6sxx7Xnlbj
+      - run: yarn install
 
-workflows:
-    version: 2
-    test-deploy-purge:
-        jobs:
-            - checkout
-            - unit-test:
-                requires:
-                    - checkout
-            - deploy:
-                requires:
-                    - unit-test
+      - run:
+          name: Install Now CLI
+          command: sudo npm install --global --unsafe-perm now
 
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      # run tests!
+      - run: yarn test
+
+      - deploy:
+          name: Deploy & Alias
+          command: now -t dGa8L7SvVQn3vX6sxx7Xnlbj
