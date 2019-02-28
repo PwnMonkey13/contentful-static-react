@@ -19,31 +19,10 @@ class Post extends Component {
     super(props);
 
     this.state = {
-      data: null
+      data: {
+        title : "MY APP"
+      }
     };
-  }
-
-  componentWillMount() {
-    const client = createClient({
-      space: process.env.REACT_APP_SPACE_ID,
-      accessToken: process.env.REACT_APP_ACCESS_TOKEN
-    });
-
-    client
-      // use getEntries because it does link resolution
-      .getEntries({
-        'sys.id[in]': this.props.match.params.id
-      })
-      .then(response => {
-        // extract the data from the response array
-        return response.items[0].fields;
-      })
-      .then(fields => {
-        this.setState({
-          data: fields
-        });
-      })
-      .catch(console.error);
   }
 
   render() {
