@@ -1,10 +1,8 @@
-# Javascript Node CircleCI 2.0 configuration file
+
 defaults: &defaults
     docker:
-        # specify the version you desire here
         - image: circleci/node:8.6.0
-
-      working_directory: ~/repo
+    working_directory: ~/repo
 
 version: 2
 jobs:
