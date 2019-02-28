@@ -1,5 +1,4 @@
 import React, { Component, createElement } from 'react';
-import { createClient } from 'contentful';
 import Helmet from 'react-helmet';
 import marksy from 'marksy';
 
